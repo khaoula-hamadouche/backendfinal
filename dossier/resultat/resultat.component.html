@@ -1,0 +1,305 @@
+
+<h3 class="title">🗂️ Traitement de Dossier N° : {{ dossierDetails?.dossier?.numeroDossier }}</h3>
+
+<mat-stepper orientation="vertical" [linear]="false" class="stepper-container mat-elevation-z8" #stepper>
+
+  <!-- Étape 1 : Informations -->
+
+  <mat-step [stepControl]="infoFormGroup">
+    <form [formGroup]="infoFormGroup" class="step-form">
+      <ng-template matStepLabel>
+        <mat-icon color="primary" class="step-icon">folder_open</mat-icon>
+        <span class="step-title">Informations du Dossier</span>
+      </ng-template>
+
+      <mat-card class="custom-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon color="accent" class="header-icon">info</mat-icon>
+            Informations Générales
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <p><strong>Numéro :</strong> {{ dossierDetails?.dossier?.numeroDossier }}</p>
+            <p><strong>Intitulé :</strong> {{ dossierDetails?.dossier?.intitule }}</p>
+            <p><strong>État :</strong> {{ dossierDetails?.dossier?.etat }}</p>
+            <p><strong>Type de Passation :</strong> {{ dossierDetails?.dossier?.typePassation }}</p>
+            <p><strong>Date Soumission :</strong> {{ dossierDetails?.dossier?.dateSoumission | date:'longDate' }}</p>
+            <p><strong>Chargé :</strong> {{ dossierDetails?.chargeDossier?.name }} ({{ dossierDetails?.chargeDossier?.email }})</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div *ngIf="dossierDetails?.details" class="details-section">
+        <mat-card class="custom-card details-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon color="accent" class="header-icon">description</mat-icon>
+              Détails Spécifiques
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngIf="['GRE_A_GRE'].includes(dossierDetails?.dossier?.typePassation)" class="details-block">
+              <p><strong>Montant Estimé :</strong> {{ dossierDetails?.details?.montantEstime | number:'1.0-0' }} DA</p>
+              <p><strong>Budget Estimé :</strong> {{ dossierDetails?.details?.budgetEstime | number:'1.0-0' }} DA</p>
+              <p><strong>Délai Réalisation :</strong> {{ dossierDetails?.details?.delaiRealisation }} mois</p>
+              <p><strong>Durée Contrat :</strong> {{ dossierDetails?.details?.dureeContrat }} mois</p>
+            </div>
+
+            <div *ngIf="['APPEL_OFFRE_LANCEMENT', 'Consultation_Prestataire_de_Lancement', 'Consultation_Procurement_de_Lancement'].includes(dossierDetails?.dossier?.typePassation)" class="details-block">
+              <p><strong>Montant Estimé :</strong> {{ dossierDetails?.details?.montantEstime | number:'1.0-0' }} DA</p>
+              <p><strong>Budget Estimé :</strong> {{ dossierDetails?.details?.budgetEstime | number:'1.0-0' }} DA</p>
+              <p><strong>Typologie de marché :</strong> {{ dossierDetails?.details?.typologidemarche }}</p>
+              <p><strong>Délai Réalisation :</strong> {{ dossierDetails?.details?.delaiRealisation }} mois</p>
+              <p><strong>Garantie :</strong> {{ dossierDetails?.details?.garantie }}</p>
+            </div>
+
+            <div *ngIf="['APPEL_OFFRE_ATTRIBUTION', 'Consultation_Prestataire_dAttribution', 'Consultation_Procurement_dAttribution'].includes(dossierDetails?.dossier?.typePassation)" class="details-block attribution-details">
+              <p><strong>Fournisseur :</strong> {{ dossierDetails?.details?.nomFournisseur }}</p>
+              <p><strong>Montant :</strong> {{ dossierDetails?.details?.montantContrat | number:'1.0-0' }} DA</p>
+              <p><strong>Durée :</strong> {{ dossierDetails?.details?.dureeContrat }} mois</p>
+              <p><strong>Étranger :</strong> {{ dossierDetails?.details?.fournisseurEtranger ? 'Oui' : 'Non' }}</p>
+              <p><strong>Installation Permanente :</strong> {{ dossierDetails?.details?.fournisseurEtrangerInstallationPermanente ? 'Oui' : 'Non' }}</p>
+              <p><strong>Délai Réalisation :</strong> {{ dossierDetails?.details?.delaiRealisation }}</p>
+              <p><strong>Expérience Fournisseur :</strong> {{ dossierDetails?.details?.experiencefournisseur }}</p>
+              <p><strong>Typologie de marché :</strong> {{ dossierDetails?.details?.typologidemarche }}</p>
+              <p><strong>Garantie :</strong> {{ dossierDetails?.details?.garantie }}</p>
+              <p><strong>Nombre de projets similaires :</strong> {{ dossierDetails?.details?.nombredeprojetssimilaires }}</p>
+              <p><strong>Notation interne :</strong> {{ dossierDetails?.details?.notationinterne }}</p>
+              <p><strong>Chiffre d'affaires :</strong> {{ dossierDetails?.details?.chiffreaffaire }}</p>
+              <p><strong>Situation fiscale :</strong> {{ dossierDetails?.details?.situationfiscale }}</p>
+              <p><strong>Fournisseur blacklist :</strong> {{ dossierDetails?.details?.fournisseurblacklist }}</p>
+              <p><strong>Type fournisseur :</strong> {{ dossierDetails?.details?.typefournisseur }}</p>
+              <p><strong>Origine Pays Non Double Imposition :</strong> {{ dossierDetails?.details?.originePaysNonDoubleImposition ? 'Oui' : 'Non' }}</p>
+            </div>
+
+            <div *ngIf="dossierDetails?.dossier?.typePassation === 'AVENANT'" class="details-block avenant-details">
+              <p><strong>Numéro Contrat :</strong> {{ dossierDetails?.details?.numeroContrat }}</p>
+              <p><strong>Date Signature :</strong> {{ dossierDetails?.details?.dateSignatureContrat | date:'longDate' }}</p>
+              <p><strong>Durée :</strong> {{ dossierDetails?.details?.dureeContrat }} mois</p>
+              <p><strong>Expiration :</strong> {{ dossierDetails?.details?.dateExpirationContrat | date:'longDate' }}</p>
+              <p><strong>Montant :</strong> {{ dossierDetails?.details?.montantContrat | number:'1.0-0' }} DA</p>
+              <p><strong>Objet :</strong> {{ dossierDetails?.details?.objetAvenant }}</p>
+              <p><strong>Montant Avenant :</strong> {{ dossierDetails?.details?.montantAvenant | number:'1.0-0' }} DA</p>
+              <p><strong>Durée Avenant :</strong> {{ dossierDetails?.details?.dureeAvenant }} mois</p>
+              <p><strong>Nouveau Montant :</strong> {{ dossierDetails?.details?.nouveauMontantContrat | number:'1.0-0' }} DA</p>
+              <p><strong>Nouvelle Durée :</strong> {{ dossierDetails?.details?.nouvelleDureeContrat }} mois</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+      </div>
+    </form>
+  </mat-step>
+  <!-- Étape 2 : Fichiers -->
+  <br>
+  <mat-step [stepControl]="filesFormGroup">
+    <form [formGroup]="filesFormGroup" class="step-form">
+      <ng-template matStepLabel>
+        <mat-icon color="accent" class="step-icon">attach_file</mat-icon>
+        <span class="step-title">Fichiers Associés</span>
+      </ng-template>
+
+      <mat-card class="custom-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon color="primary" class="header-icon">folder_zip</mat-icon>
+            Documents liés
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list class="file-list">
+            <mat-list-item *ngFor="let file of dossierDetails?.fileDetails | keyvalue" class="file-item">
+              <mat-icon matListIcon color="accent">insert_drive_file</mat-icon>
+              <a [href]="file.value" target="_blank" rel="noopener noreferrer" class="file-link">
+                {{ file.key }}
+              </a>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="actions">
+        <button mat-raised-button color="warn" matStepperPrevious>Précédent</button>
+        <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <br>
+  <!-- Étape 3 : Validation -->
+  <mat-step [stepControl]="doneFormGroup">
+    <form [formGroup]="doneFormGroup" class="step-form">
+      <br>
+
+      <ng-template matStepLabel >
+
+        <mat-icon color="primary">check_circle</mat-icon> Validation et Compte Rendu
+      </ng-template>
+
+
+      <br>
+      <mat-card >
+        <br>
+
+        <mat-card-title>   Vérification par IA</mat-card-title>
+        <mat-card-content>
+          <br>
+          <button mat-raised-button color="primary" (click)="verifyWithIA()" [disabled]="loadingIA">
+            <mat-icon class="mr-1">smart_toy</mat-icon>
+            {{ loadingIA ? 'Analyse en cours...' : 'Vérifier par IA' }}
+          </button>
+
+          <div *ngIf="loadingIA" class="mt-3">
+            <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+          </div>
+          <!-- Résultats des prédictions -->
+          <div class="results-container" *ngIf="!loadingIA">
+            <ng-container *ngIf="predictionResultRF || predictionResultxgboost || predictionResultknn || predictionResultSVM || predictionResultAdaBoost || predictionResultNaiveBayes; else noResults">
+
+              <!-- Carte Résultat Générique -->
+              <div *ngIf="predictionResultRF" class="result-card">
+                <h4>Random Forest</h4>
+                <ng-container *ngTemplateOutlet="resultTemplate; context: { result: predictionResultRF }"></ng-container>
+              </div>
+
+              <div *ngIf="predictionResultxgboost" class="result-card">
+                <h4>XGBoost</h4>
+                <ng-container *ngTemplateOutlet="resultTemplate; context: { result: predictionResultxgboost }"></ng-container>
+              </div>
+
+              <div *ngIf="predictionResultknn" class="result-card">
+                <h4>KNN</h4>
+                <ng-container *ngTemplateOutlet="resultTemplate; context: { result: predictionResultknn }"></ng-container>
+              </div>
+
+              <div *ngIf="predictionResultSVM" class="result-card">
+                <h4>SVM</h4>
+                <ng-container *ngTemplateOutlet="resultTemplate; context: { result: predictionResultSVM }"></ng-container>
+              </div>
+
+              <div *ngIf="predictionResultAdaBoost" class="result-card">
+                <h4>AdaBoost</h4>
+                <ng-container *ngTemplateOutlet="resultTemplate; context: { result: predictionResultAdaBoost }"></ng-container>
+              </div>
+
+              <div *ngIf="predictionResultNaiveBayes" class="result-card">
+                <h4>Naive Bayes</h4>
+                <ng-container *ngTemplateOutlet="resultTemplate; context: { result: predictionResultNaiveBayes }"></ng-container>
+              </div>
+
+            </ng-container>
+
+            <ng-template #noResults>
+              <p>Aucun résultat de prédiction pour le moment.</p>
+            </ng-template>
+          </div>
+
+          <!-- Template commun pour les résultats -->
+          <ng-template #resultTemplate let-result="result">
+            <p>
+        <span class="prediction-label"
+              [ngClass]="{
+                'prediction-accorde': result.prediction === 'Visa Accordé',
+                'prediction-refuse': result.prediction === 'Visa Refusé'
+              }">
+          {{ result.prediction }}
+        </span>
+            </p>
+            <p><strong>Confiance :</strong></p>
+            <ul>
+              <li>Visa Accordé : {{ result.confidence['Visa Accordé'] }}</li>
+              <li>Visa Refusé : {{ result.confidence['Visa Refusé'] }}</li>
+            </ul>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+
+      <br>
+
+
+      <br>
+      <br>
+      <br>
+      <div *ngIf="isLoading" class="text-center my-4">
+        <div class="spinner-border" role="status" aria-hidden="true"></div>
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+
+      <div *ngIf="!isLoading">
+        <!-- Résultat existant en lecture seule -->
+        <section *ngIf="resultatExistant; else formTemplate" class="mb-4 p-3 border rounded bg-light">
+          <h3 class="mb-3">Résultat existant :</h3>
+          <p><strong>Résultat :</strong></p>
+          <p class="border rounded p-2 bg-white">{{ resultatExistant.resultat }}</p>
+
+          <p><strong>Compte rendu :</strong></p>
+          <p class="border rounded p-2 bg-white">{{ resultatExistant.compteRendu }}</p>
+        </section>
+
+        <!-- Formulaire pour ajouter un résultat -->
+        <ng-template #formTemplate>
+          <form [formGroup]="resultatForm" (ngSubmit)="onSubmit()" novalidate class="needs-validation" [class.was-validated]="resultatForm.invalid && resultatForm.touched">
+            <fieldset class="mb-3">
+              <legend>Ajouter un résultat et un compte rendu</legend>
+
+              <div class="mb-3">
+                <label for="resultat" class="form-label">Résultat <span class="text-danger">*</span></label>
+                <textarea
+                  id="resultat"
+                  formControlName="resultat"
+                  class="form-control"
+                  rows="4"
+                  [ngClass]="{'is-invalid': resultatForm.get('resultat')?.invalid && resultatForm.get('resultat')?.touched}"
+                  aria-describedby="resultatHelp"
+                  required
+                ></textarea>
+                <div id="resultatHelp" class="form-text">Décrivez le résultat ici.</div>
+                <div *ngIf="resultatForm.get('resultat')?.invalid && resultatForm.get('resultat')?.touched" class="invalid-feedback">
+                  Le résultat est requis.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="compteRendu" class="form-label">Compte rendu <span class="text-danger">*</span></label>
+                <textarea
+                  id="compteRendu"
+                  formControlName="compteRendu"
+                  class="form-control"
+                  rows="5"
+                  [ngClass]="{'is-invalid': resultatForm.get('compteRendu')?.invalid && resultatForm.get('compteRendu')?.touched}"
+                  aria-describedby="compteRenduHelp"
+                  required
+                ></textarea>
+                <div id="compteRenduHelp" class="form-text">Fournissez un compte rendu détaillé.</div>
+                <div *ngIf="resultatForm.get('compteRendu')?.invalid && resultatForm.get('compteRendu')?.touched" class="invalid-feedback">
+                  Le compte rendu est requis.
+                </div>
+              </div>
+
+            </fieldset>
+
+            <button type="submit" class="btn btn-primary" [attr.aria-disabled]="resultatForm.invalid ? true : null" [disabled]="resultatForm.invalid">
+              Ajouter
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="resultatForm.reset()">
+              Réinitialiser
+            </button>
+          </form>
+        </ng-template>
+      </div>
+
+      <div class="actions" style="display: flex; justify-content: space-between; margin-top: 16px;">
+        <button mat-raised-button color="warn" matStepperPrevious>Précédent</button>
+        <div style="display: flex; gap: 8px;">
+        </div>
+      </div>
+
+    </form>
+  </mat-step>
+
+</mat-stepper>

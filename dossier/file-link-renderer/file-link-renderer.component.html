@@ -1,0 +1,22 @@
+<div class="location-form">
+  <div>
+    <label for="country">Pays :</label>
+    <input type="text" id="country" [(ngModel)]="country">
+  </div>
+
+  <div>
+    <label for="city">Ville :</label>
+    <input type="text" id="city" [(ngModel)]="city">
+  </div>
+
+  <button (click)="callApiWithLocation()">Tester l'API avec la localisation</button>
+
+  <div *ngIf="apiResponse" class="api-response-container">
+    <h3>Réponse de l'API :</h3>
+    <pre>{{ apiResponse | json }}</pre>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <p>Erreur : {{ errorMessage }}</p>
+  </div>
+</div>

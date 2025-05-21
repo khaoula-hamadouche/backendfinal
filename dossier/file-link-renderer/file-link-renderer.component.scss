@@ -1,0 +1,67 @@
+.location-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; // Espacement entre les éléments
+
+  label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; // Important pour la largeur
+    width: 100%; // Prend toute la largeur du conteneur
+  }
+
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .api-response-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+
+    h3 {
+      color: #28a745;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 3px;
+      overflow-x: auto;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #333;
+    }
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+}

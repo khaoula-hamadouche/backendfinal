@@ -1,0 +1,344 @@
+// Variables for consistent colors (optional but highly recommended for large projects)
+$primary-blue: #1976d2;
+$dark-blue-text: #2c3e50;
+$light-blue-bg: #e3f2fd;
+$lightest-blue-bg: #f8faff;
+$charcoal-blue-grey: #4a6572;
+$border-light-blue: #bbdefb;
+$border-medium-blue: #cfe2f3;
+$white: #ffffff;
+$grey-border: #ddd;
+$grey-shadow: rgba(0, 0, 0, 0.08);
+$soft-shadow: rgba(0, 0, 0, 0.06);
+
+// --- General Stepper & Form Styles ---
+.stepper-container {
+  margin: 20px auto;
+  max-width: 1000px; // Limit max width for better readability on large screens
+  border-radius: 12px;
+  overflow: hidden; // Ensures border-radius is respected
+}
+
+.title {
+  text-align: center;
+  font-size: 1.8em;
+  color: $dark-blue-text;
+  margin-bottom: 25px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; // Space between icon and text
+}
+
+.step-form {
+  padding: 20px;
+  background-color: $lightest-blue-bg;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px $grey-shadow;
+}
+
+.mat-step-label {
+  display: flex;
+  align-items: center;
+  gap: 10px; // Consistent gap
+
+  .step-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    color: $primary-blue;
+    vertical-align: middle; // Align with text
+  }
+
+  .step-title {
+    font-weight: 600;
+    font-size: 1.2em; // Slightly larger for labels
+    color: $primary-blue;
+  }
+}
+
+// --- Custom Card Styles (for both info and files) ---
+.custom-card {
+  margin-top: 15px; // Space from step label
+  margin-bottom: 25px; // Space between cards and sections
+  border-radius: 10px;
+  box-shadow: 0 3px 10px $soft-shadow;
+  background-color: $white; // Ensure cards are white
+}
+
+.mat-card-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid $light-blue-bg;
+  background-color: $light-blue-bg; // Consistent light blue header background
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+  .mat-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: $dark-blue-text;
+
+    .header-icon {
+      font-size: 26px;
+      width: 26px;
+      height: 26px;
+      color: $primary-blue; // Header icons are primary blue
+      vertical-align: middle;
+    }
+  }
+}
+
+.mat-card-content {
+  padding: 25px 20px; // Consistent padding
+
+  .info-grid,
+  .details-block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    font-size: 1em;
+
+    p {
+      margin: 0;
+      padding: 10px 0;
+      border-bottom: 1px dotted $border-light-blue;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      strong {
+        color: $charcoal-blue-grey;
+      }
+    }
+  }
+
+  .details-block {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid $border-medium-blue;
+  }
+}
+
+.details-section {
+  margin-top: 25px;
+
+  .details-card {
+    background-color: $white; // Ensure details card content is pure white
+  }
+}
+
+// --- Actions (Buttons) ---
+.actions {
+  display: flex;
+  justify-content: flex-end; // Buttons to the right by default
+  padding-top: 30px;
+  gap: 8px; // Space between buttons
+
+  &.justify-between { // For the validation step buttons
+    justify-content: space-between;
+  }
+
+  button {
+    padding: 12px 30px;
+    font-size: 1.05em;
+    background-color: $primary-blue;
+    color: $white;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: darken($primary-blue, 8%);
+    }
+
+    &.mat-raised-button[color="warn"] {
+      background-color: #f44336; // Keep red for warn
+      &:hover {
+        background-color: darken(#f44336, 8%);
+      }
+    }
+
+    &.mat-raised-button[color="accent"] {
+      background-color: #ffc107; // Keep a clear accent for "Refuser" if needed
+      color: $dark-blue-text; // Text color for accent
+      &:hover {
+        background-color: darken(#ffc107, 8%);
+      }
+    }
+  }
+}
+
+// --- File List Specific Styles ---
+.file-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid $grey-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.file-link {
+  text-decoration: none;
+  color: $primary-blue;
+  font-weight: 500;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: darken($primary-blue, 15%);
+    text-decoration: underline;
+  }
+}
+
+// --- AI Prediction Results ---
+.results-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; // Use rem for consistent spacing
+  margin-top: 2rem; // More space after AI button
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.result-card {
+  background: $white;
+  border-radius: 10px; // Consistent border-radius
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); // Softer shadow
+  padding: 1.2rem 1.5rem; // More padding
+  transition: transform 0.2s ease, box-shadow 0.2s ease; // Smooth hover
+  border-left: 5px solid $primary-blue; // Blue accent border
+
+  &:hover {
+    transform: translateY(-5px); // Lift more on hover
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); // Stronger shadow on hover
+  }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    color: $dark-blue-text; // Dark blue for headings
+    font-weight: 700; // Bolder heading
+    font-size: 1.2em;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0.5rem; // Space from confidence label
+
+    li {
+      padding-left: 1.2rem; // More space for bullet
+      position: relative;
+      margin-bottom: 6px; // More space between list items
+      font-size: 0.95em;
+      color: #555;
+
+      &::before {
+        content: '•';
+        color: $primary-blue; // Blue bullet
+        position: absolute;
+        left: 0;
+        font-size: 1.2em; // Larger bullet
+        line-height: 1;
+      }
+    }
+  }
+}
+
+.prediction-label {
+  display: inline-block;
+  padding: 6px 12px; // More padding
+  font-weight: 600;
+  font-size: 14px; // Slightly larger font
+  border-radius: 25px; // More rounded
+  margin: 0.5rem 0 0.8rem; // Better spacing
+  color: $white;
+  text-transform: uppercase; // Make it stand out
+
+  &.prediction-accorde {
+    background-color: #4caf50; // Green for 'Accordé'
+  }
+
+  &.prediction-refuse {
+    background-color: #f44336; // Red for 'Refusé'
+  }
+}
+
+// --- Analysis Results (bottom cards) ---
+.result-card.analysis-result { // New class to differentiate from prediction cards
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid $grey-border; // Light grey border
+
+  p {
+    margin: 0.25rem 0;
+    color: #333;
+
+    strong {
+      color: #444;
+    }
+  }
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: 16px;
+  border-bottom: 1px solid $grey-border; // Consistent light border
+
+  &.bg-green-100 {
+    background-color: #e6f4ea; // Light green
+    color: #276749; // Dark green text
+    border-color: #38a169; // Green border
+  }
+
+  &.bg-red-100 {
+    background-color: #ffe5e5; // Light red
+    color: #c53030; // Dark red text
+    border-color: #e53e3e; // Red border
+  }
+
+  // If there's a 'yellow' state, ensure it's defined
+  &.bg-yellow-100 {
+    background-color: #fffbea;
+    color: #975a16;
+    border-color: #f6ad55;
+  }
+}
+
+.result-body {
+  padding: 1rem;
+  font-size: 14px;
+  background-color: $white;
+}
+
+// Additional styles for the mat-progress-bar within mat-card-content
+mat-progress-bar {
+  margin-top: 15px;
+  height: 8px; // Make progress bar a bit thicker
+  border-radius: 4px;
+  .mat-progress-bar-fill::after {
+    background-color: $primary-blue; // Ensure progress bar color matches primary blue
+  }
+}

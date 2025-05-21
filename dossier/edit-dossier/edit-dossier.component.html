@@ -1,0 +1,108 @@
+<mat-card class="form-card p-6">
+  <h2>Modifier le dossier</h2>
+  <h3 class="mb-4">Type de Passation: {{ dossier?.typePassation }}</h3>
+  <form [formGroup]="dossierForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field appearance="outline" class="form-field w-full mb-4">
+      <mat-label>Numéro de Dossier</mat-label>
+      <input matInput formControlName="numeroDossier" required class="input-field">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field w-full mb-4">
+      <mat-label>Intitulé</mat-label>
+      <input matInput formControlName="intitule" required class="input-field">
+    </mat-form-field>
+
+    <div *ngIf="selectedFichiers.length > 0" class="files-section mb-4">
+      <h3>Fichiers Requis</h3>
+      <div *ngFor="let fichierNom of selectedFichiers; let i = index" class="file-upload mb-2">
+        <label class="file-label">{{ fichierNom }} :</label>
+        <span *ngIf="existingRequiredFiles[fichierNom]?.nomFichier">
+          Fichier existant: {{ existingRequiredFiles[fichierNom]?.nomFichier }}
+        </span>
+        <span *ngIf="!existingRequiredFiles[fichierNom]?.nomFichier">
+        </span>
+      </div>
+    </div>
+
+
+    <div *ngIf="existingAdditionalFiles.length > 0 || fichiersSupplementaires.length > 0" class="additional-files mb-4">
+      <h3>Fichiers Supplémentaires</h3>
+      <div *ngFor="let existingFile of existingAdditionalFiles; let i = index" class="file-upload mb-2">
+        <label class="file-label">{{ existingFile.nom }} :</label>
+        <span *ngIf="existingFile?.nom">
+          Fichier existant: {{ existingFile.nom }}
+        </span>
+        <span *ngIf="!existingFile?.nom">
+          Aucun fichier n'a été sélectionné
+        </span>
+      </div>
+      <div *ngFor="let fichierSuppl of fichiersSupplementaires; let i = index" class="file-upload mb-2">
+        <label class="file-label">{{ fichierSuppl.nom }} :</label>
+        <input type="file" (change)="onFileSelect($event, selectedFichiers.length + existingAdditionalFiles.length + i)" class="file-input">
+        <span>Aucun fichier n'a été sélectionné</span>
+      </div>
+    </div>
+    <div *ngFor="let champ of DonneeRequis[dossierForm.value.typePassation]" class="form-field mb-4">
+      <mat-form-field
+        *ngIf="!isCheckbox(champ) && champ !== 'typologidemarche' && champ !== 'garantie' && champ !== 'situationfiscale' && champ !== 'fournisseurblacklist' && champ !== 'typefournisseur'"
+        appearance="outline"
+        class="w-full"
+      >
+        <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+        <input matInput [formControlName]="champ" class="input-field w-full">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="champ === 'typologidemarche'" appearance="outline" class="w-full">
+        <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+        <mat-select formControlName="typologidemarche" class="w-full">
+          <mat-option *ngFor="let option of typologidemarcheOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="champ === 'garantie'" appearance="outline" class="w-full">
+        <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+        <mat-select formControlName="garantie" class="input-field w-full">
+          <mat-option *ngFor="let option of garantieOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="champ === 'situationfiscale'" appearance="outline" class="w-full">
+        <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+        <mat-select formControlName="situationfiscale" class="input-field w-full">
+          <mat-option *ngFor="let option of situationFiscaleOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="champ === 'fournisseurblacklist'" appearance="outline" class="w-full">
+        <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+        <mat-select formControlName="fournisseurblacklist" class="input-field w-full">
+          <mat-option *ngFor="let option of blacklistOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="champ === 'typefournisseur'" appearance="outline" class="w-full">
+        <mat-label>{{ champLabels['typefournisseur'] || 'Type de Fournisseur' }}</mat-label>
+        <mat-select formControlName="typefournisseur" (selectionChange)="onTypeFournisseurChangeEdit($event.value)" class="input-field w-full">
+          <mat-option *ngFor="let option of typefournisseurOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="dossierForm.get('typefournisseur')?.invalid && dossierForm.get('typefournisseur')?.touched">
+          Le type de fournisseur est requis.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-checkbox
+        *ngIf="isCheckbox(champ) && dossierForm.get('typefournisseur')?.value === 'ETRANGER'"
+        [formControlName]="champ"
+        class="checkbox"
+      >
+        {{ champLabels[champ] || champ }}
+      </mat-checkbox>
+    </div>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="dossierForm.invalid">Mettre à jour</button>
+      <button mat-button type="button" routerLink="/dashboard">Annuler</button>
+    </div>
+
+  </form>
+</mat-card>

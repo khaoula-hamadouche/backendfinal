@@ -1,0 +1,245 @@
+<mat-card class="form-card p-6">
+  <mat-horizontal-stepper linear class="stepper">
+<!-- step 1-->
+    <mat-step [stepControl]="dossierForm.get('numeroDossier')! && dossierForm.get('intitule')!" label="Informations du Dossier" class="step">
+      <form [formGroup]="dossierForm" class="grid grid-cols-1 gap-6">
+        <h4 class="col-span-full text-2xl font-semibold mb-2">Informations du Dossier</h4>
+        <mat-form-field appearance="outline" class="form-field w-full mb-4" style="width: 100%;">
+          <mat-label>Type de Passation</mat-label>
+          <mat-select formControlName="typePassation" (selectionChange)="onTypePassationChange($event.value)" required>
+            <mat-option *ngFor="let passation of passations" [value]="passation">
+              {{ passation }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Numéro de Dossier</mat-label>
+          <input matInput formControlName="numeroDossier" required placeholder="Ex : 2025/DOS/001" [value]="formatNumeroDossier(dossierForm.get('numeroDossier')?.value)">
+          <mat-error *ngIf="dossierForm.get('numeroDossier')?.hasError('required')">
+            Le numéro de dossier est requis.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Intitulé</mat-label>
+          <textarea matInput formControlName="intitule" required placeholder="Ex : Fourniture de matériel informatique"> </textarea>
+          <mat-error *ngIf="dossierForm.get('intitule')?.hasError('required')">
+            L’intitulé est requis.
+          </mat-error>
+        </mat-form-field>
+        <ng-container *ngFor="let champ of DonneeRequis[dossierForm.value.typePassation]">
+          <mat-form-field
+            *ngIf="!isCheckbox(champ) && champ !== 'typologidemarche' && champ !== 'garantie' && champ !== 'situationfiscale' && champ !== 'fournisseurblacklist' && champ !== 'typefournisseur' && !(champ === 'fournisseurEtrangerInstallationPermanente' && dossierForm.get('typefournisseur')?.value !== 'ETRANGER') && !(champ === 'originePaysNonDoubleImposition' && dossierForm.get('typefournisseur')?.value !== 'ETRANGER')"
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+            <input matInput [formControlName]="champ" [placeholder]="champLabels[champ] || champ">
+            <mat-error *ngIf="dossierForm.get(champ)?.invalid && dossierForm.get(champ)?.touched">
+              Ce champ est requis ou invalide.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="champ === 'typologidemarche'" appearance="outline" class="w-full">
+            <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+            <mat-select formControlName="typologidemarche">
+              <mat-option *ngFor="let option of typologidemarcheOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dossierForm.get('typologidemarche')?.invalid && dossierForm.get('typologidemarche')?.touched">
+              La typologie du marché est requise.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="champ === 'garantie'" appearance="outline" class="w-full">
+            <mat-label>{{ champLabels[champ] || champ }}</mat-label>
+            <mat-select formControlName="garantie">
+              <mat-option *ngFor="let option of garantieOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dossierForm.get('garantie')?.invalid && dossierForm.get('garantie')?.touched">
+              La garantie est requise.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="champ === 'situationfiscale'" appearance="outline" class="w-full">
+            <mat-label>{{ champLabels['situationfiscale'] || 'Situation Fiscale' }}</mat-label>
+            <mat-select formControlName="situationfiscale">
+              <mat-option *ngFor="let option of situationFiscaleOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dossierForm.get('situationfiscale')?.invalid && dossierForm.get('situationfiscale')?.touched">
+              La situation fiscale est requise.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="champ === 'fournisseurblacklist'" appearance="outline" class="w-full">
+            <mat-label>{{ champLabels['fournisseurblacklist'] || 'Fournisseur Blacklisté' }}</mat-label>
+            <mat-select formControlName="fournisseurblacklist">
+              <mat-option *ngFor="let option of blacklistOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dossierForm.get('fournisseurblacklist')?.invalid && dossierForm.get('fournisseurblacklist')?.touched">
+              Le statut de blacklistage est requis.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="champ === 'typefournisseur'" appearance="outline" class="w-full">
+            <mat-label>{{ champLabels['typefournisseur'] || 'Type de Fournisseur' }}</mat-label>
+            <mat-select formControlName="typefournisseur" (selectionChange)="onTypeFournisseurChange($event.value)">
+              <mat-option *ngFor="let option of typefournisseurOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dossierForm.get('typefournisseur')?.invalid && dossierForm.get('typefournisseur')?.touched">
+              Le type de fournisseur est requis.
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+        <div *ngIf="dossierForm.get('typefournisseur')?.value === 'ETRANGER'">
+          <label>
+            <input type="checkbox" formControlName="fournisseurEtrangerInstallationPermanente" />
+            Fournisseur étranger avec installation permanente
+          </label>
+<br>
+          <label>
+            <input type="checkbox" formControlName="originePaysNonDoubleImposition" />
+            Origine du pays avec une commission de non-double imposition
+          </label>
+        </div>
+
+        <div class="navigation-buttons">
+
+
+          <button mat-raised-button matStepperNext [disabled]="dossierForm.invalid" class="btn-next">
+            Suivant
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <!-- step 2-->
+    <!-- Étape 1 : Fichiers Requis -->
+
+
+
+    <mat-step [stepControl]="dossierForm.get('typePassation')!" label="Fichiers Requis" class="step">
+      <form [formGroup]="dossierForm" class="form">
+        <div class="form-header text-center mb-6">
+          <h4 class="form-title">Sélection du Mode de Passation</h4>
+        </div>
+
+
+
+        <div *ngIf="selectedFichiers.length > 0" class="files-section mb-4">
+          <h3 class="section-title">Fichiers Requis</h3>
+          <div *ngFor="let fichier of selectedFichiers; let i = index" class="file-upload mb-2">
+            <label class="file-label">{{ fichier }} :</label>
+            <input type="file" (change)="onFileSelect($event, i)" class="file-input">
+          </div>
+        </div>
+
+        <!-- Afficher la section des fichiers supplémentaires uniquement après la sélection d'un type de passation -->
+        <h4>Ajouter autre fichier</h4>
+        <button mat-raised-button color="primary" (click)="afficherChampNomFichier()" class="add-file-btn mb-4" *ngIf="!afficherNomFichier">
+          Ajouter un fichier supplémentaire
+        </button>
+
+        <div *ngIf="afficherNomFichier" class="additional-file mb-4">
+          <div class="input-wrapper">
+            <input matInput formControlName="nomFichierSuppl" class="file-input" placeholder="Nom du fichier">
+            <mat-error *ngIf="dossierForm.get('nomFichierSuppl')?.invalid && dossierForm.get('nomFichierSuppl')?.touched">
+              Le nom du fichier est requis.
+            </mat-error>
+          </div>
+          <button mat-raised-button color="primary" (click)="ajouterFichierSupplementaire()" class="add-file-btn">
+            Ajouter
+          </button>
+        </div>
+
+        <div *ngIf="fichiersSupplementaires.length > 0" class="additional-files mb-4">
+          <h3 class="section-title">Fichiers Supplémentaires</h3>
+          <div *ngFor="let fichierSuppl of fichiersSupplementaires; let i = index" class="file-upload mb-2">
+            <label class="file-label">{{ fichierSuppl.nom }} :</label>
+            <input type="file" (change)="onFileSelect($event, selectedFichiers.length + i)" class="file-input">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button mat-stroked-button matStepperPrevious class="btn-previous">
+            Précédent
+          </button>
+          <button mat-raised-button matStepperNext class="btn-next">Suivant</button>
+        </div>
+
+      </form>
+
+
+
+    </mat-step>
+
+
+    <!-- Étape 3 : Confirmation -->
+    <mat-step label="Confirmation" class="step">
+      <h2 class="confirmation-title">📝 Confirmation du Dossier</h2>
+      <p>Veuillez vérifier les informations avant la soumission.</p>
+
+      <mat-card class="confirmation-card">
+        <mat-card-content>
+
+          <section class="info-block">
+            <h3>📁 Informations de dossier {{ dossierForm.get('numeroDossier')?.value }}</h3>
+
+            <!-- Ligne plus proche du titre -->
+            <mat-divider class="custom-divider"></mat-divider>
+
+            <div class="info-line">
+              <label>Intitulé :</label>
+              <span>{{ dossierForm.get('intitule')?.value }}</span>
+            </div>
+            <div class="info-line">
+              <label>Type de Passation :</label>
+              <span>{{ dossierForm.get('typePassation')?.value }}</span>
+            </div>
+
+            <!-- Données dynamiques spécifiques au type -->
+            <div *ngIf="DonneeRequis[dossierForm.value.typePassation]?.length" class="info-supp">
+              <div *ngFor="let champ of DonneeRequis[dossierForm.value.typePassation]" class="info-line">
+                <label>{{ champLabels[champ] || champ }} :</label>
+                <span>{{ dossierForm.get(champ)?.value }}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="info-block">
+            <h3>📎 Fichiers Requis</h3>
+            <mat-divider></mat-divider>
+            <mat-list>
+              <mat-list-item *ngFor="let fichier of selectedFichiers; let i = index">
+                <span matLine><strong>{{ fichier }}</strong> : {{ dossierForm.get('fichiers')?.value[i]?.name || 'Non sélectionné' }}</span>
+              </mat-list-item>
+            </mat-list>
+          </section>
+
+          <section *ngIf="fichiersSupplementaires.length" class="info-block">
+            <h3>📌 Fichiers Supplémentaires</h3>
+            <mat-divider></mat-divider>
+            <mat-list>
+              <mat-list-item *ngFor="let fichierSuppl of fichiersSupplementaires">
+                <span matLine><strong>{{ fichierSuppl.nom }}</strong> : {{ fichierSuppl.file?.name || 'Non sélectionné' }}</span>
+              </mat-list-item>
+            </mat-list>
+          </section>
+
+        </mat-card-content>
+      </mat-card>
+
+
+      <div class="form-actions">
+        <button mat-stroked-button matStepperPrevious class="btn-previous">
+          Précédent
+        </button>
+        <button mat-raised-button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-next">
+          <mat-progress-spinner *ngIf="isSubmitting" mode="indeterminate" diameter="20"></mat-progress-spinner>
+          Ajouter un dossier
+        </button>
+
+
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-card>

@@ -1,0 +1,92 @@
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+  background-color: #0056b3;
+  color: white;
+  text-align: left;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f9f9f9;
+}
+
+.badge {
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.badge.EN_ATTENTE {
+  background-color: #ffc107;
+  color: black;
+}
+
+.badge.VALIDÉ {
+  background-color: #28a745;
+  color: #1c1f2c;
+}
+
+.badge.REJETÉ {
+  background-color: #dc3545;
+  color: white;
+}
+
+.file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.file-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.file-btn:hover {
+  background: #0056b3;
+}
+
+.no-file {
+  color: #999;
+  font-style: italic;
+}
+
+/* Applique une couleur jaune au texte si l'état est "EN_ATTENTE" */
+.etat-attente .ag-cell-value {
+  background-color: #ffc107;
+  color: black;
+}
+
+/* Applique une couleur verte au texte si l'état est "VALIDÉ" */
+.etat-valide .ag-cell-value {
+  background-color: #28a745;
+  color: #1c1f2c;
+}
+
+/* Applique une couleur rouge au texte si l'état est "REJETÉ" */
+.etat-rejete .ag-cell-value {
+  background-color: #dc3545;
+  color: white;
+}

@@ -1,0 +1,54 @@
+<c-row>
+  <c-col md="12">
+    <c-card class="mb-4 shadow-sm">
+      <c-card-body>
+
+        <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
+          <h5 class="mb-3 mb-md-0">Gestion des dossiers Attribution</h5>
+
+          <form class="row g-2 align-items-center ms-auto" (submit)="check()">
+            <!-- Sélecteur de type -->
+            <div class="col-auto">
+              <select class="form-select" [(ngModel)]="selectedType" name="type" (change)="onTypeChange()">
+                <option value="">-- Mode de passation --</option>
+                <option value="Gre">Gre_a_Gre</option>
+                <option value="Recours">Recours</option>
+                <option value="Attribution">Attribution</option>
+                <option value="Avenant">Avenant</option>
+                <option value="Lancement">Lancement</option>
+                <option value="dossier">Tout</option>
+              </select>
+            </div>
+
+            <!-- Champ fournisseur -->
+            <div class="col-auto">
+              <input type="text" class="form-control" [(ngModel)]="nomFournisseur" name="fournisseur" placeholder="Nom du fournisseur">
+            </div>
+
+            <!-- Bouton Vérifier -->
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary">Vérifier</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tableau Ag-Grid -->
+        <ag-grid-angular
+          style="width: 100%; height:500px;"
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="rowData"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [paginationPageSizeSelector]="paginationPageSizeSelector"
+          (gridReady)="onGridReady($event)"
+        ></ag-grid-angular>
+
+
+
+
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

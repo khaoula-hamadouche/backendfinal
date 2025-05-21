@@ -1,0 +1,34 @@
+<div class="container p-4 border rounded shadow-sm bg-white">
+  <h4 *ngIf="dossier?.numeroDossier" class="mb-4">
+    📁 Les fichiers du Dossier Numéro : << {{ dossier.numeroDossier }} >>
+  </h4>
+  <!-- Boutons d'action -->
+  <div class="d-flex flex-wrap gap-2 mb-4">
+    <button class="btn btn-primary" (click)="openMergedPdf()">
+      📄 PDF Fusionné
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="generateSingleDossierPdf()">
+      🖨️ PDF Généré
+    </button>
+  </div>
+
+  <!-- Liste des fichiers -->
+  <div *ngIf="dossier?.fileDetails && getFilesNames(dossier.fileDetails).length > 0; else noFiles">
+    <ul class="list-group">
+      <li *ngFor="let fileName of getFilesNames(dossier.fileDetails)" class="list-group-item d-flex justify-content-between align-items-center">
+        <span>📂 {{ fileName }}</span>
+        <button class="btn btn-outline-primary btn-sm" (click)="openFile(dossier.fileDetails[fileName])">
+          Ouvrir
+        </button>
+
+      </li>
+    </ul>
+  </div>
+
+  <!-- Aucune fichier -->
+  <ng-template #noFiles>
+    <div class="alert alert-warning mt-3" role="alert">
+      📭 Aucun fichier disponible pour ce dossier.
+    </div>
+  </ng-template>
+</div>

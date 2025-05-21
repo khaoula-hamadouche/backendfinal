@@ -1,0 +1,138 @@
+.form-card {
+  max-width: 900px; /* Agrandissement du cadre */
+  margin: 30px auto; /* Augmentation des marges autour */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Ombre plus douce et plus grande */
+  border-radius: 12px; /* Bords plus lisses */
+  padding: 32px; /* Augmentation du rembourrage interne */
+  background-color: #f9f9f9; /* Fond légèrement grisé pour un aspect lisse */
+
+  h2 {
+    color: #3f51b5;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    color: #757575;
+    margin-bottom: 30px;
+    font-weight: 400;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+
+    .form-field {
+      margin-bottom: 24px;
+
+      .mat-form-field-wrapper {
+        padding-bottom: 1.5em;
+      }
+
+      .mat-label {
+        color: #555;
+        font-size: 1.1rem; /* Légèrement plus grand */
+      }
+
+      .input-field {
+        font-size: 1.1rem;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background-color: #fff; /* Fond blanc pour les inputs */
+      }
+    }
+
+    .files-section,
+    .additional-files {
+      margin-bottom: 30px;
+      padding: 24px;
+      border: 1px solid #e0e0e0; /* Bord plus clair */
+      border-radius: 8px;
+      background-color: #fff; /* Fond blanc pour les sections de fichiers */
+
+      h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #3f51b5;
+        border-bottom: 2px solid #e0e0e0; /* Séparateur visuel */
+        padding-bottom: 10px;
+      }
+      .file-input {
+        display: none;
+      }
+      .file-upload {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .file-label {
+          margin-right: 16px;
+          color: #555;
+          width: 200px; /* Légèrement plus large */
+          flex-shrink: 0;
+          font-size: 1rem;
+        }
+
+        .file-input {
+          display: none;
+        }
+
+        label[mat-button] {
+          margin-right: 12px;
+          font-size: 1rem;
+          padding: 8px 16px;
+          border-radius: 6px;
+        }
+
+        span {
+          font-size: 0.95rem;
+          color: #777;
+          margin-left: 12px;
+        }
+      }
+    }
+
+    .additional-file {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+
+      .mat-form-field {
+        flex-grow: 1;
+      }
+
+      .add-file-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 6px;
+      }
+    }
+
+    .checkbox {
+      margin-top: 20px;
+      margin-bottom: 24px;
+      .mat-checkbox-layout {
+        font-size: 1rem;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 20px;
+      justify-content: flex-end;
+
+      button[mat-raised-button][color="primary"] {
+        font-size: 1rem;
+        padding: 12px 24px;
+        border-radius: 6px;
+      }
+
+      button[mat-button] {
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 6px;
+      }
+    }
+  }
+}

@@ -1,0 +1,255 @@
+// Couleur principale
+$primary-color: #3f51b5;
+$primary-hover: #2c3aa7;
+$primary-light: #c5cae9;
+
+// Boutons généraux
+.stepper-btn,
+.btn-previous,
+.btn-next {
+  padding: 10px 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-transform: none;
+  min-width: 120px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+// Bouton Précédent (stroked)
+.mat-stroked-button,
+.btn-previous {
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: transparent;
+
+  &:hover {
+    background-color: rgba(63, 81, 181, 0.1);
+  }
+}
+
+// Bouton Suivant ou Ajouter (raised)
+.mat-raised-button,
+.btn-next {
+  background-color: $primary-color;
+  color: white;
+
+  &:hover {
+    background-color: $primary-hover;
+  }
+
+  &:disabled {
+    background-color: $primary-light;
+    color: #f5f5f5;
+    cursor: not-allowed;
+  }
+}
+
+// Layout général du formulaire
+.form-card {
+  max-width: 900px;
+  margin: auto;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+// Champs
+.mat-form-field.w-full {
+  width: 100%;
+}
+
+.mat-select {
+  font-weight: 500;
+}
+
+// Titres
+.form-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $primary-color;
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+// Sections de fichiers
+.files-section,
+.additional-files {
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+// Upload de fichier
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .file-label {
+    flex: 1;
+    font-weight: 500;
+  }
+
+  .file-input {
+    flex: 2;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  input[type="file"]::-webkit-file-upload-button,
+  input[type="file"]::file-selector-button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  input[type="file"]:hover::file-selector-button {
+    background-color: $primary-hover;
+  }
+}
+
+// Ajout fichier
+.add-file-btn {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+// Confirmation
+.confirmation-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $primary-color;
+  margin-bottom: 10px;
+}
+
+.confirmation-card {
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  background-color: #fdfdfd;
+}
+
+.custom-divider {
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.info-block {
+  margin-bottom: 25px;
+}
+
+.info-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+
+  label {
+    font-weight: 600;
+    min-width: 180px; /* pour un bon alignement */
+    color: #333;
+  }
+
+  span {
+    flex: 1;
+    color: #555;
+  }
+}
+
+.filename {
+  color: #666;
+  font-style: italic;
+}
+
+
+// Positionnement des boutons
+.navigation-buttons,
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+}
+/* Utilisation de grid pour une disposition verticale */
+form {
+  display: grid;
+  grid-template-columns: 1fr; /* Une seule colonne pour un champ par ligne */
+  gap: 1.5rem; /* Espacement entre les éléments */
+
+  .mat-form-field {
+    width: 100%; /* Assure que chaque champ prend toute la largeur */
+  }
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
+/* Input de fichier */
+.file-input {
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #3f51b5;
+    background-color: #e3f2fd;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #aaa;
+  }
+
+  &:hover {
+    border-color: #3f51b5;
+  }
+}
+
+/* Bouton ajouter un fichier supplémentaire */
+.add-file-btn {
+  margin-top: 10px;
+  padding: 8px 20px;
+  background-color: #3f51b5;
+  color: white;
+  border-radius: 4px;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #2c3aa7;
+  }
+
+  &:focus {
+    outline: none;
+    background-color: #2c3aa7;
+  }
+}
+
+/* Pour le formulaire MatFormField */
+.mat-form-field {
+  margin-bottom: 16px;
+  width: 100%;
+}
+.loading-file {
+  color: #666;
+  font-style: italic;
+}
+
